@@ -13,6 +13,11 @@ CLASS zdat_binary_object DEFINITION
         !data_xstring        TYPE xstring
       RETURNING
         VALUE(binary_object) TYPE REF TO zdat_binary_object .
+    CLASS-METHODS create_by_xstring_data_object
+      IMPORTING
+        !xstring_data_object TYPE REF TO data
+      RETURNING
+        VALUE(binary_object) TYPE REF TO zdat_binary_object .
     CLASS-METHODS create_by_string
       IMPORTING
         !data_string         TYPE string
@@ -47,6 +52,9 @@ CLASS zdat_binary_object DEFINITION
     METHODS get_xstring
       RETURNING
         VALUE(data_xstring) TYPE xstring .
+    METHODS get_xstring_data_object
+      RETURNING
+        VALUE(xstring_data_object) TYPE REF TO data .
     METHODS get_string
       RETURNING
         VALUE(data_string) TYPE string
@@ -101,6 +109,14 @@ ENDCLASS.
 CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Static Public Method ZDAT_BINARY_OBJECT=>CREATE_BY_GENERIC_BINARY_TAB
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] BINARY_TAB                     TYPE        STANDARD TABLE
+* | [--->] BINARY_LENGTH                  TYPE        I
+* | [<-()] BINARY_OBJECT                  TYPE REF TO ZDAT_BINARY_OBJECT
+* | [!CX!] ZCX_RETURN3
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD create_by_generic_binary_tab.
 
     binary_object = NEW #( ).
@@ -126,6 +142,14 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Static Public Method ZDAT_BINARY_OBJECT=>CREATE_BY_SOLISTI1_TAB
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] SOLISTI1_TAB                   TYPE        T_SOLISTI1_TAB
+* | [--->] TEXT_LENGTH                    TYPE        I
+* | [<-()] BINARY_OBJECT                  TYPE REF TO ZDAT_BINARY_OBJECT
+* | [!CX!] ZCX_RETURN3
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD create_by_solisti1_tab.
 
     "--------------------------------------
@@ -177,6 +201,14 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Static Public Method ZDAT_BINARY_OBJECT=>CREATE_BY_SOLIX_TAB
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] SOLIX_TAB                      TYPE        SOLIX_TAB
+* | [--->] BINARY_LENGTH                  TYPE        I
+* | [<-()] BINARY_OBJECT                  TYPE REF TO ZDAT_BINARY_OBJECT
+* | [!CX!] ZCX_RETURN3
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD create_by_solix_tab.
 
     binary_object = create_by_generic_binary_tab(
@@ -186,6 +218,13 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Static Public Method ZDAT_BINARY_OBJECT=>CREATE_BY_STRING
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] DATA_STRING                    TYPE        STRING
+* | [<-()] BINARY_OBJECT                  TYPE REF TO ZDAT_BINARY_OBJECT
+* | [!CX!] ZCX_RETURN3
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD create_by_string.
 
     binary_object = NEW #( ).
@@ -211,6 +250,12 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Static Public Method ZDAT_BINARY_OBJECT=>CREATE_BY_XSTRING
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] DATA_XSTRING                   TYPE        XSTRING
+* | [<-()] BINARY_OBJECT                  TYPE REF TO ZDAT_BINARY_OBJECT
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD create_by_xstring.
 
     binary_object = NEW #( ).
@@ -222,6 +267,11 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_BINARY_LENGTH
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] SIZE                           TYPE        I
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_binary_length.
 
     ASSIGN me->content_xstring_data_object->* TO  FIELD-SYMBOL(<content_xstring>).
@@ -231,6 +281,11 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_BINARY_LENGTH_TEXT
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] SIZE_TEXT                      TYPE        CHAR12
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_binary_length_text.
 
     size_text = shift_left( me->get_binary_length( ) ).
@@ -238,6 +293,12 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_GENERIC_BINARY_TAB
+* +-------------------------------------------------------------------------------------------------+
+* | [<-->] RAW_LINE_TAB                   TYPE        STANDARD TABLE
+* | [!CX!] ZCX_RETURN3
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_generic_binary_tab.
 
     ASSIGN me->content_xstring_data_object->* TO  FIELD-SYMBOL(<content_xstring>).
@@ -263,6 +324,11 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_RSPOLPBI_TAB
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] BINARY_TAB                     TYPE        RMPS_RSPOLPBI
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_rspolpbi_tab.
 
     ASSIGN me->content_xstring_data_object->* TO  FIELD-SYMBOL(<content_xstring>).
@@ -276,6 +342,12 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_SOLISTI1_TAB
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] SOLISTI1_TAB                   TYPE        T_SOLISTI1_TAB
+* | [!CX!] ZCX_RETURN3
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_solisti1_tab.
 
     DATA(string) = me->get_string( ).
@@ -301,6 +373,11 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_SOLIX_TAB
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] SOLIX_TAB                      TYPE        SOLIX_TAB
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_solix_tab.
 
     ASSIGN me->content_xstring_data_object->* TO  FIELD-SYMBOL(<content_xstring>).
@@ -312,6 +389,12 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_STRING
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] DATA_STRING                    TYPE        STRING
+* | [!CX!] ZCX_RETURN3
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_string.
 
     ASSIGN me->content_xstring_data_object->* TO  FIELD-SYMBOL(<content_xstring>).
@@ -330,6 +413,12 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_TBL1024_TAB
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] TBL1024_TAB                    TYPE        TABL1024_T
+* | [!CX!] ZCX_RETURN3
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_tbl1024_tab.
 
     get_generic_binary_tab(
@@ -338,6 +427,12 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_TEXT_LENGTH
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] TEXT_LENGTH                    TYPE        I
+* | [!CX!] ZCX_RETURN3
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_text_length.
 
     DATA(data_string) = me->get_string( ).
@@ -347,6 +442,11 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_XSTRING
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] DATA_XSTRING                   TYPE        XSTRING
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_xstring.
 
     ASSIGN me->content_xstring_data_object->* TO  FIELD-SYMBOL(<content_xstring>).
@@ -356,9 +456,40 @@ CLASS ZDAT_BINARY_OBJECT IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Private Method ZDAT_BINARY_OBJECT->_SET_DATA_OBJECT
+* +-------------------------------------------------------------------------------------------------+
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD _set_data_object.
 
     me->content_xstring_data_object = REF #( me->new_data_xstring ).
+
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Static Public Method ZDAT_BINARY_OBJECT=>CREATE_BY_XSTRING_DATA_OBJECT
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] XSTRING_DATA_OBJECT            TYPE REF TO DATA
+* | [<-()] BINARY_OBJECT                  TYPE REF TO ZDAT_BINARY_OBJECT
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD create_by_xstring_data_object.
+
+    binary_object = NEW #( ).
+
+    binary_object->content_xstring_data_object = xstring_data_object.
+
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZDAT_BINARY_OBJECT->GET_XSTRING_DATA_OBJECT
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] XSTRING_DATA_OBJECT            TYPE REF TO DATA
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD get_xstring_data_object.
+
+    xstring_data_object = me->content_xstring_data_object.
 
   ENDMETHOD.
 ENDCLASS.
